@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>ใบลา</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+</head>
+
+<body>
+    <div>
+        <h1 class="text-center mt-4">ยื่นใบลา</h1>
+
+        {% if error %}
+        <div class="alert alert-danger text-center container">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        {% if success %}
+        <div class="alert alert-success text-center container">
+            {{ success }}
+        </div>
+        {% endif %}
+
+        <form class="container" method="POST" action="{% url 'create-dayoff' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                {{ form.reason.label }}
+                {{ form.reason }}
+            </div>
+            <div class="form-group">
+                {{ form.type.label }}
+                {{ form.type }}
+            </div>
+            <div class="form-group">
+                {{ form.date_start.label }}
+                {{ form.date_start }}
+            </div>
+            <div class="form-group">
+                {{ form.date_end.label }}
+                {{ form.date_end }}
+            </div>
+
+            <div class="center group">
+                <input class="btn btn-success" type="submit" value="ยื่นใบลา" />
+                <a href="{% url 'index' %}">
+                    <input class="btn btn-danger" type="button" value="กลับไป" />
+                </a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

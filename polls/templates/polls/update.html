@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Edit Poll</title>
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+    />
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div>
+    <h1 class="text-center mt-4">Edit Poll</h1>
+
+    {% if error %}
+        <div class="alert alert-danger text-center container narrow">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form class="container" method="POST" action="{% url 'update_poll' poll_id=poll.id %}">
+        {% csrf_token %}
+
+        <!-- Poll form -->
+        <div class="row">
+            <div class="col form-group">
+                {{ form.title.label }}
+                {{ form.title }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-group">
+                {{ form.start_date.label }}
+                {{ form.start_date }}
+            </div>
+            <div class="col form-group">
+                {{ form.end_date.label }}
+                {{ form.end_date }}
+            </div>
+        </div>
+
+        <!-- Formset of questions -->
+        {{ formset.management_form }}
+
+        <h3 class="text-center title">Questions</h3>
+        {% for i in formset %}
+            <div class="row mt-4">
+                {{ i }}
+                {% if i.question_id.value > 0 %}
+                    <div class="mt-4">
+                        <a href="{% url 'update_choice' question_id=i.question_id.value %}">
+                            <input type="button" class="btn btn-warning" value="Edit Choices">
+                        </a>
+                        <a href="{% url 'delete_question' question_id=i.question_id.value %}">
+                            <input type="button" class="btn btn-danger" value="Delete Question">
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <!-- Form submission -->
+        <div class="text-center mt-4">
+            <input class="btn btn-success" type="submit" value="Save"/>
+            <a href="{% url 'index' %}">
+                <input class="btn btn-danger" type="button" value="Back"/>
+            </a>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
